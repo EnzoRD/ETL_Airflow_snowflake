@@ -18,7 +18,7 @@ def main():
         "SEASONS",
         "seasons.csv",
         ["LEAGUE_CODE", "SEASON_ID"], # Cada temporada es única por liga
-        ["SEASON_ID", "SEASON_YEAR","START_DATE", "END_DATE", "IS_ACTIVE","LEAGUE_CODE"])
+        ["START_DATE", "END_DATE", "IS_ACTIVE","LEAGUE_CODE", "SEASON_ID", "SEASON_YEAR"])
     load_csv_into_snowflake(
         "LEAGUES",
         "leagues.csv",

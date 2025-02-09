@@ -1,111 +1,143 @@
-# 📊 Football Data ETL: Python + Snowflake 🚀
+# 📊 ETL de Datos de Fútbol con Snowflake y Airflow
 
-Este proyecto implementa un **ETL (Extract, Transform, Load)** para obtener datos en tiempo real de **Football-Data.org**, procesarlos y almacenarlos en **Snowflake**.  
-El diseño de la base de datos y las optimizaciones aplicadas garantizan **escalabilidad, eficiencia y fácil mantenimiento**.
-
----
-## 📂 **Estructura del Proyecto**
-📦 football-etl  
- ┣ 📂 dags                 # DAGs de Apache Airflow para la automatización del ETL  
- ┣ 📂 sql                  # DDL y queries SQL para Snowflake  
- ┃ ┣ 📄 ddl_snowflake.sql  # Definición de tablas y optimizaciones en Snowflake  
- ┣ 📂 scripts              # Código Python para la ETL  
- ┃ ┣ 📄 extract.py         # Obtiene datos de la API de Football-Data.org  
- ┃ ┣ 📄 transform.py       # Procesa y normaliza datos  
- ┃ ┣ 📄 load.py            # Carga los datos en Snowflake  
- ┣ 📂 config               # Archivos de configuración (.env, credenciales)  
- ┣ 📄 requirements.txt     # Dependencias del proyecto  
- ┣ 📄 README.md            # Este archivo  
-
-
+Este proyecto implementa un pipeline ETL utilizando Apache Airflow y Snowflake para extraer, transformar y cargar datos de ligas de fútbol.
 
 ---
 
-## 🏗 **1. Modelado de la Base de Datos en Snowflake**
-### 📌 **Tablas creadas y optimizaciones**
-Para garantizar una estructura **limpia y eficiente**, dividimos la información en **múltiples tablas normalizadas**, en lugar de guardar todo en una sola tabla.  
-Esta separación permite **manejar múltiples temporadas, optimizar consultas y evitar redundancia**.
 
-### 🏆 **1.1 Tabla `leagues` (Ligas)**
-| Campo      | Tipo    | Descripción |
-|------------|--------|-------------|
-| league_id  | STRING | Código único de la liga (Ej: 'PL', 'CL', 'BL1') |
-| league_name | STRING | Nombre de la liga (Ej: 'Premier League') |
+## 📄 **1. Descripción General**
 
-✅ **Motivo**:  
-Evita repetir el nombre de la liga en cada registro de clasificación, optimizando almacenamiento y consultas.
+Este proyecto permite la integración de datos de ligas de fútbol en Snowflake mediante un pipeline ETL automatizado con Airflow.
 
 ---
 
-### 📅 **1.2 Tabla `seasons` (Temporadas)**
-| Campo      | Tipo      | Descripción |
-|------------|----------|-------------|
-| season_id  | INT (PK) | ID único de la temporada |
-| season_year | INT (UNIQUE) | Año de la temporada (Ej: 2024) |
-| start_date | DATE | Fecha de inicio |
-| end_date   | DATE | Fecha de fin |
-| is_active  | BOOLEAN | Indica si la temporada está en curso (`TRUE = Activa`) |
+## 🏗 **2. Arquitectura del Proyecto**
 
-✅ **Motivo**:  
-- Manejo de múltiples temporadas sin duplicar datos.  
-- Permite saber si una temporada **está en curso o ya finalizó**.  
-- Se actualiza automáticamente con `UPDATE seasons SET is_active = FALSE WHERE end_date < CURRENT_DATE;`
+El flujo de trabajo sigue las siguientes fases:
+1. **Extracción**: Se consultan datos de la API y se guardan en archivos CSV.
+2. **Transformación**: Se validan y ajustan los datos antes de la carga.
+3. **Carga**: Los datos se suben a Snowflake, evitando duplicados mediante `MERGE`.
+
+---
+---
+
+## 📥 **3. Extracción de Datos**
+
+- Se obtienen datos de ligas, temporadas, equipos y clasificaciones desde la API `Football-Data.org`, incluyendo:
+- **Ligas** (`LEAGUES`)
+- **Equipos** (`TEAMS`)
+- **Temporadas** (`SEASONS`)
+- **Clasificaciones** (`STANDINGS` - actualizadas semanalmente)
 
 ---
 
-### 🏟 **1.3 Tabla `teams` (Equipos)**
-| Campo      | Tipo    | Descripción |
-|------------|--------|-------------|
-| team_id    | INT (PK) | ID único del equipo |
-| team_name  | STRING  | Nombre del equipo (Ej: 'Liverpool FC') |
-| short_name | STRING  | Nombre corto (Ej: 'Liverpool') |
-| tla        | STRING  | Código de 3 letras del equipo (Ej: 'LIV') |
-| crest_url  | STRING  | URL del escudo del equipo |
+## 🔄 **4. Transformación de Datos**
 
-✅ **Motivo**:  
-- Evita **duplicar nombres de equipos en cada temporada**.  
-- Facilita integraciones con otras bases de datos.
+- Normalización de los datos y conversión a formato CSV.
+- Uso de `MERGE` en Snowflake para evitar duplicados.
+- Definición de `FILE_FORMAT` para facilitar la carga de archivos.
 
 ---
 
-### 📊 **1.4 Tabla `standings` (Clasificación)**
-| Campo         | Tipo      | Descripción |
-|--------------|----------|-------------|
-| standing_id  | INT (PK) | ID único de la fila |
-| league_id    | STRING (FK) | Relación con `leagues` |
-| season_id    | INT (FK) | Relación con `seasons` |
-| team_id      | INT (FK) | Relación con `teams` |
-| position     | INT      | Posición en la liga |
-| played_games | INT      | Partidos jugados |
-| won          | INT      | Partidos ganados |
-| draw         | INT      | Partidos empatados |
-| lost         | INT      | Partidos perdidos |
-| points       | INT      | Puntos acumulados |
-| goals_for    | INT      | Goles a favor |
-| goals_against | INT     | Goles en contra |
-| goal_difference | INT   | Diferencia de goles |
-| last_updated | TIMESTAMP | Fecha de última actualización |
+## 📤 **5. Carga de Datos en Snowflake**
 
-**✅ Optimización**:  
-🚀 **`CLUSTER BY (league_id, season_id)`** → Acelera búsquedas por liga y temporada.  
+- Se suben los CSV a un `STAGE` en Snowflake.
+- Se usa `MERGE` para insertar y actualizar registros sin duplicados.
+- **Carga diferenciada:**
+  - `LEAGUES`, `TEAMS` y `SEASONS` se actualizan **una vez al año**.
+  - `STANDINGS` se actualiza **semanalmente** con un DAG incremental en Airflow.
+  - 
+---
 
 ---
 
-### 📜 **1.5 Tabla `standings_history` (Histórico de posiciones)**
-| Campo         | Tipo      | Descripción |
-|--------------|----------|-------------|
-| history_id   | INT (PK) | ID único |
-| standing_id  | INT (FK) | Relación con `standings` |
-| date_updated | TIMESTAMP | Fecha de actualización |
-| position     | INT      | Posición en ese momento |
-| points       | INT      | Puntos en ese momento |
+## 🛠 **6. Modelo de Datos**
 
-✅ **Motivo**:  
-- Permite **ver cómo evolucionó la clasificación a lo largo del tiempo**.  
-- Útil para análisis históricos.
+A continuación, se presenta la estructura de las tablas utilizadas en Snowflake:
+
+### **6.1 Tabla `LEAGUES` (Ligas)**
+| Campo       | Tipo                | Descripción                          |
+|------------|--------------------|--------------------------------------|
+| LEAGUE_ID  | VARCHAR(16777216) (PK) | Código de la liga (Ej: 'PL', 'CL') |
+| LEAGUE_NAME| VARCHAR(16777216)  | Nombre de la liga (Ej: 'Premier League') |
+
+### **6.2 Tabla `SEASONS` (Temporadas)**
+| Campo       | Tipo                | Descripción                              |
+|------------|--------------------|------------------------------------------|
+| SEASON_ID  | NUMBER(38,0) (PK)  | Identificador único de la temporada     |
+| SEASON_YEAR| VARCHAR(16777216)  | Año de la temporada (Ej: '2024/2025')   |
+| START_DATE | DATE               | Fecha de inicio                         |
+| END_DATE   | DATE               | Fecha de finalización                   |
+| IS_ACTIVE  | BOOLEAN            | Indica si la temporada está en curso    |
+| LEAGUE_CODE| VARCHAR(16777216) (FK) | Código de la liga                      |
+
+### **6.3 Tabla `TEAMS` (Equipos)**
+| Campo       | Tipo                | Descripción                               |
+|------------|--------------------|-------------------------------------------|
+| TEAM_ID    | NUMBER(38,0) (PK)  | Identificador único del equipo           |
+| TEAM_NAME  | VARCHAR(16777216)  | Nombre completo del equipo               |
+| SHORT_NAME | VARCHAR(16777216)  | Nombre corto del equipo                  |
+| TLA        | VARCHAR(16777216)  | Código de 3 letras del equipo (Ej: 'LIV')|
+| CREST_URL  | VARCHAR(16777216)  | URL del escudo del equipo                |
+| LEAGUE_CODE| VARCHAR(16777216) (FK) | Código de la liga                      |
+
+### **6.4 Tabla `STANDINGS` (Clasificaciones)**
+| Campo          | Tipo                | Descripción                                  |
+|---------------|--------------------|----------------------------------------------|
+| STANDING_ID  | NUMBER(38,0) (PK)  | Identificador único de la clasificación     |
+| LEAGUE_ID    | VARCHAR(16777216) (FK) | Código de la liga                          |
+| SEASON_ID    | NUMBER(38,0) (FK)  | Identificador de la temporada              |
+| TEAM_ID      | NUMBER(38,0) (FK)  | Identificador del equipo                   |
+| POSITION     | NUMBER(38,0)       | Posición en la tabla                       |
+| PLAYED_GAMES | NUMBER(38,0)       | Partidos jugados                           |
+| WON          | NUMBER(38,0)       | Partidos ganados                           |
+| DRAW         | NUMBER(38,0)       | Partidos empatados                         |
+| LOST         | NUMBER(38,0)       | Partidos perdidos                          |
+| POINTS       | NUMBER(38,0)       | Puntos totales                             |
+| GOALS_FOR    | NUMBER(38,0)       | Goles a favor                              |
+| GOALS_AGAINST| NUMBER(38,0)       | Goles en contra                            |
+| GOAL_DIFFERENCE | NUMBER(38,0)    | Diferencia de goles                        |
+| LAST_UPDATED | TIMESTAMP          | Última actualización                       |
 
 ---
 
-## 📧 **4. Contacto**
-📌 **Autor:** [Enzo Ruiz Diaz](https://github.com/enzoruizdiaz)  
-📌 **LinkedIn:** [linkedin.com/in/enzoruizdiaz](https://linkedin.com/in/enzoruizdiaz)
+## ✅ Estado Actual
+✔ **Implementado:**
+- **Extracción y transformación** de `LEAGUES`, `TEAMS` y `SEASONS`.
+- **Carga a Snowflake** con `MERGE` para evitar duplicados.
+- **Definición de formatos de archivo y optimización de carga.**
+
+🔜 **Próximos Pasos:**
+- Implementar la **carga incremental de `STANDINGS`** con Airflow.
+- Optimizar consultas en Snowflake para mejorar la performance.
+- Automatizar el pipeline completamente en Airflow.
+
+## 📂 Estructura del Proyecto
+```
+ETL_Airflow_Snowflake/
+│── Scripts/
+│   ├── extract_main.py  # Ejecuta la extracción de datos
+│   ├── load_main.py     # Carga los datos en Snowflake
+│   ├── utils.py         # Funciones auxiliares
+│── dags/
+│   ├── etl_pipeline.py  # DAG de Airflow
+│── data/                # Archivos CSV generados
+│── README.md            # Documentación del proyecto
+```
+
+## 📌 Configuración y Ejecución
+1. **Configurar variables de entorno en Airflow UI** (Snowflake credentials, rutas, etc.).
+2. **Ejecutar `extract_main.py`** para generar los CSV.
+3. **Ejecutar `load_main.py`** para cargar datos a Snowflake.
+4. **Configurar Airflow DAG** para la carga incremental de `STANDINGS`.
+
+## 📌 Tecnologías Utilizadas
+- **Python** (pandas, requests, Snowflake connector)
+- **Airflow** (para la orquestación del pipeline)
+- **Snowflake** (almacenamiento de datos y consultas optimizadas)
+- **Football-Data.org API** (fuente de datos)
+
+---
+📌 **Autor:** Enzo Ruiz Diaz  
+📌 **Contacto:** [LinkedIn](https://www.linkedin.com/in/enzo-ruiz-diaz)  
+🚀 **Última actualización:** Febrero 2025
