@@ -1,0 +1,115 @@
+league_code,position,team_id,team_name,played_games,won,draw,lost,points,goals_for,goals_against,goal_difference
+CL,1,64,Liverpool FC,8,7,0,1,21,17,5,12
+CL,2,81,FC Barcelona,8,6,1,1,19,28,13,15
+CL,3,57,Arsenal FC,8,6,1,1,19,16,3,13
+CL,4,108,FC Internazionale Milano,8,6,1,1,19,11,1,10
+CL,5,78,Club Atlético de Madrid,8,6,0,2,18,20,12,8
+CL,6,3,Bayer 04 Leverkusen,8,5,1,2,16,15,7,8
+CL,7,521,Lille OSC,8,5,1,2,16,17,10,7
+CL,8,58,Aston Villa FC,8,5,1,2,16,13,6,7
+CL,9,102,Atalanta BC,8,4,3,1,15,20,6,14
+CL,10,4,Borussia Dortmund,8,5,0,3,15,22,12,10
+CL,11,86,Real Madrid CF,8,5,0,3,15,20,12,8
+CL,12,5,FC Bayern München,8,5,0,3,15,20,12,8
+CL,13,98,AC Milan,8,5,0,3,15,14,11,3
+CL,14,674,PSV,8,4,2,2,14,16,12,4
+CL,15,524,Paris Saint-Germain FC,8,4,1,3,13,14,9,5
+CL,16,1903,Sport Lisboa e Benfica,8,4,1,3,13,16,12,4
+CL,17,548,AS Monaco FC,8,4,1,3,13,13,13,0
+CL,18,512,Stade Brestois 29,8,4,1,3,13,10,11,-1
+CL,19,675,Feyenoord Rotterdam,8,4,1,3,13,18,21,-3
+CL,20,109,Juventus FC,8,3,3,2,12,9,7,2
+CL,21,732,Celtic FC,8,3,3,2,12,13,14,-1
+CL,22,65,Manchester City FC,8,3,2,3,11,18,14,4
+CL,23,498,Sporting Clube de Portugal,8,3,2,3,11,13,12,1
+CL,24,851,Club Brugge KV,8,3,2,3,11,7,11,-4
+CL,25,755,GNK Dinamo Zagreb,8,3,2,3,11,12,19,-7
+CL,26,10,VfB Stuttgart,8,3,1,4,10,13,17,-4
+CL,27,1887,FK Shakhtar Donetsk,8,2,1,5,7,8,16,-8
+CL,28,103,Bologna FC 1909,8,1,3,4,6,4,9,-5
+CL,29,7283,FK Crvena Zvezda,8,2,0,6,6,13,22,-9
+CL,30,2021,SK Sturm Graz,8,2,0,6,6,5,14,-9
+CL,31,907,AC Sparta Praha,8,1,1,6,4,7,21,-14
+CL,32,721,RB Leipzig,8,1,0,7,3,8,15,-7
+CL,33,298,Girona FC,8,1,0,7,3,5,13,-8
+CL,34,1877,FC Red Bull Salzburg,8,1,0,7,3,5,27,-22
+CL,35,7509,ŠK Slovan Bratislava,8,0,0,8,0,7,27,-20
+CL,36,1871,BSC Young Boys,8,0,0,8,0,3,24,-21
+BL1,1,5,FC Bayern München,21,17,3,1,54,65,19,46
+BL1,2,3,Bayer 04 Leverkusen,21,13,7,1,46,49,27,22
+BL1,3,19,Eintracht Frankfurt,20,11,5,4,38,45,27,18
+BL1,4,10,VfB Stuttgart,21,9,6,6,33,37,30,7
+BL1,5,721,RB Leipzig,20,9,6,5,33,34,29,5
+BL1,6,15,1. FSV Mainz 05,21,9,5,7,32,33,24,9
+BL1,7,17,SC Freiburg,21,9,4,8,31,27,36,-9
+BL1,8,11,VfL Wolfsburg,21,8,6,7,30,43,35,8
+BL1,9,4,Borussia Dortmund,21,8,6,7,30,36,34,2
+BL1,10,18,Borussia Mönchengladbach,20,9,3,8,30,32,30,2
+BL1,11,12,SV Werder Bremen,21,8,6,7,30,34,39,-5
+BL1,12,16,FC Augsburg,21,7,6,8,27,24,35,-11
+BL1,13,28,1. FC Union Berlin,21,5,7,9,22,16,27,-11
+BL1,14,20,FC St. Pauli 1910,20,6,3,11,21,18,22,-4
+BL1,15,2,TSG 1899 Hoffenheim,21,4,7,10,19,26,40,-14
+BL1,16,44,1. FC Heidenheim 1846,21,4,3,14,15,25,42,-17
+BL1,17,720,Holstein Kiel,20,3,3,14,12,31,52,-21
+BL1,18,36,VfL Bochum 1848,20,2,4,14,10,17,44,-27
+SA,1,113,SSC Napoli,23,17,3,3,54,38,16,22
+SA,2,108,FC Internazionale Milano,23,15,6,2,51,56,22,34
+SA,3,102,Atalanta BC,24,15,5,4,50,51,26,25
+SA,4,109,Juventus FC,24,10,13,1,43,41,21,20
+SA,5,99,ACF Fiorentina,23,12,6,5,42,40,23,17
+SA,6,110,SS Lazio,23,13,3,7,42,40,31,9
+SA,7,103,Bologna FC 1909,22,9,10,3,37,35,27,8
+SA,8,98,AC Milan,22,9,8,5,35,33,24,9
+SA,9,100,AS Roma,23,8,7,8,31,34,29,5
+SA,10,115,Udinese Calcio,23,8,5,10,29,28,36,-8
+SA,11,586,Torino FC,23,6,9,8,27,24,27,-3
+SA,12,107,Genoa CFC,23,6,8,9,26,21,32,-11
+SA,13,5890,US Lecce,23,6,5,12,23,18,41,-23
+SA,14,450,Hellas Verona FC,24,7,2,15,23,26,50,-24
+SA,15,7397,Como 1907,24,5,7,12,22,28,40,-12
+SA,16,445,Empoli FC,23,4,9,10,21,22,33,-11
+SA,17,104,Cagliari Calcio,23,5,6,12,21,24,38,-14
+SA,18,112,Parma Calcio 1913,23,4,8,11,20,29,42,-13
+SA,19,454,Venezia FC,23,3,7,13,16,22,38,-16
+SA,20,5911,AC Monza,23,2,7,14,13,20,34,-14
+PL,1,64,Liverpool FC,23,17,5,1,56,56,21,35
+PL,2,57,Arsenal FC,24,14,8,2,50,49,22,27
+PL,3,351,Nottingham Forest FC,24,14,5,5,47,40,27,13
+PL,4,61,Chelsea FC,24,12,7,5,43,47,31,16
+PL,5,65,Manchester City FC,24,12,5,7,41,48,35,13
+PL,6,67,Newcastle United FC,24,12,5,7,41,42,29,13
+PL,7,1044,AFC Bournemouth,24,11,7,6,40,41,28,13
+PL,8,58,Aston Villa FC,24,10,7,7,37,34,37,-3
+PL,9,63,Fulham FC,24,9,9,6,36,36,32,4
+PL,10,397,Brighton & Hove Albion FC,24,8,10,6,34,35,38,-3
+PL,11,402,Brentford FC,24,9,4,11,31,42,42,0
+PL,12,354,Crystal Palace FC,24,7,9,8,30,28,30,-2
+PL,13,66,Manchester United FC,24,8,5,11,29,28,34,-6
+PL,14,73,Tottenham Hotspur FC,24,8,3,13,27,48,37,11
+PL,15,563,West Ham United FC,24,7,6,11,27,29,46,-17
+PL,16,62,Everton FC,23,6,8,9,26,23,28,-5
+PL,17,76,Wolverhampton Wanderers FC,24,5,4,15,19,34,52,-18
+PL,18,338,Leicester City FC,24,4,5,15,17,25,53,-28
+PL,19,349,Ipswich Town FC,24,3,7,14,16,22,49,-27
+PL,20,340,Southampton FC,24,2,3,19,9,18,54,-36
+PD,1,86,Real Madrid CF,22,15,4,3,49,50,21,29
+PD,2,78,Club Atlético de Madrid,22,14,6,2,48,37,14,23
+PD,3,81,FC Barcelona,22,14,3,5,45,60,24,36
+PD,4,77,Athletic Club,22,11,8,3,41,33,20,13
+PD,5,94,Villarreal CF,22,10,7,5,37,44,33,11
+PD,6,87,Rayo Vallecano de Madrid,23,9,8,6,35,27,24,3
+PD,7,298,Girona FC,22,9,4,9,31,31,30,1
+PD,8,90,Real Betis Balompié,23,7,9,7,30,27,30,-3
+PD,9,79,CA Osasuna,22,7,9,6,30,27,31,-4
+PD,10,89,RCD Mallorca,22,9,3,10,30,19,28,-9
+PD,11,92,Real Sociedad de Fútbol,22,8,4,10,28,18,19,-1
+PD,12,559,Sevilla FC,22,7,7,8,28,24,30,-6
+PD,13,558,RC Celta de Vigo,23,7,5,11,26,33,37,-4
+PD,14,82,Getafe CF,22,5,9,8,24,17,17,0
+PD,15,275,UD Las Palmas,22,6,5,11,23,27,36,-9
+PD,16,745,CD Leganés,22,5,8,9,23,19,30,-11
+PD,17,80,RCD Espanyol de Barcelona,22,6,5,11,23,21,33,-12
+PD,18,263,Deportivo Alavés,22,5,6,11,21,25,34,-9
+PD,19,95,Valencia CF,22,4,7,11,19,22,37,-15
+PD,20,250,Real Valladolid CF,23,4,3,16,15,15,48,-33

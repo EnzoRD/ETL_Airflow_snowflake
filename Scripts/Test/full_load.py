@@ -252,7 +252,7 @@ def save_standings_to_csv(standings_data: list, output_path: str):
 
 def main():
     """Función principal para extraer y guardar los datos de la temporada."""
-    output_directory = r"C:\Users\enzor\Documents\Proyectos\Proyecto 2 ETL\ETL_Airflow_snowflake\data"
+    output_directory = r"C:\Users\enzor\Documents\Proyectos\Proyecto 2 ETL\ETL_Airflow_snowflake\Data"
     os.makedirs(output_directory, exist_ok=True)  # Crear la carpeta si no existe
     
     all_teams = []  # Lista para almacenar los equipos de todas las ligas
