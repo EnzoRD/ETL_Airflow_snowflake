@@ -22,7 +22,7 @@ def main():
     # Extraer datos de la temporada, equipos y standings
     
     all_teams = []
-    all_standings = []
+    #all_standings = []
     
 
     for league_code in LEAGUES.keys():
@@ -34,14 +34,14 @@ def main():
             teams = fetch_teams_from_standings(league_code)
             all_teams.extend(teams)
 
-            standings = fetch_standings_from_json(data, league_code)
-            all_standings.extend(standings)
+            #standings = fetch_standings_from_json(data, league_code)
+            #all_standings.extend(standings)
 
     if all_teams:
         save_teams_to_csv(all_teams, output_directory)
 
-    if all_standings:
-        save_standings_to_csv(all_standings, output_directory)
+    #if all_standings:
+        #save_standings_to_csv(all_standings, output_directory)
 
 if __name__ == "__main__":
     main()

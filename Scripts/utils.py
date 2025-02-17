@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 import requests
+from datetime import datetime, timezone
 from typing import Optional, Dict
 from typing import List, Dict
 from dotenv import load_dotenv
@@ -108,18 +109,20 @@ def fetch_standings_from_json(data: Dict, league_code: str) -> List[Dict]:
     for entry in data.get("standings", [])[0].get("table", []):
         team_info = entry["team"]
         standings_data.append({
-            "league_code": league_code,
-            "season_id": data["season"]["id"],
-            "team_id": team_info["id"],
-            "position": entry["position"],
-            "played_games": entry["playedGames"],
-            "won": entry["won"],
-            "draw": entry["draw"],
-            "lost": entry["lost"],
-            "points": entry["points"],
-            "goals_for": entry["goalsFor"],
-            "goals_against": entry["goalsAgainst"],
-            "goal_difference": entry["goalDifference"]
+            "LEAGUE_ID": league_code,  # Ajuste de nombre
+            "SEASON_ID": data["season"]["id"],
+            "TEAM_ID": team_info["id"],
+            "POSITION": entry["position"],
+            "PLAYED_GAMES": entry["playedGames"],
+            "WON": entry["won"],
+            "DRAW": entry["draw"],
+            "LOST": entry["lost"],
+            "POINTS": entry["points"],
+            "GOALS_FOR": entry["goalsFor"],
+            "GOALS_AGAINST": entry["goalsAgainst"],
+            "GOAL_DIFFERENCE": entry["goalDifference"],
+            "IS_ACTIVE": True,  # Marcamos como activo
+            "UPDATED_AT": None  # Se actualizará si el registro cambia
         })
     return standings_data
 
@@ -145,9 +148,14 @@ def save_teams_to_csv(teams_data: List[Dict], output_path: str):
     save_to_csv(pd.DataFrame(teams_data), file_path, ["team_id"])
 
 def save_standings_to_csv(standings_data: List[Dict], output_path: str):
-    """Guarda standings en `standings.csv` evitando duplicados."""
+    """Guarda standings en `standings.csv` evitando duplicados y agregando `updated_at`."""
     file_path = os.path.join(output_path, "standings.csv")
-    save_to_csv(pd.DataFrame(standings_data), file_path, ["league_code", "team_id", "position"])
+    
+    # Convertir a DataFrame y agregar `updated_at`
+    df = pd.DataFrame(standings_data)
+    df.columns = [col.upper() for col in df.columns]  # convertis columnas a mayúsculas
+    
+    save_to_csv(df, file_path, ["LEAGUE_ID", "TEAM_ID", "POSITION"])
 
 
 # Función de Carga a snowflake
